@@ -107,4 +107,4 @@ docker compose --profile test run --rm --no-deps -e FIRESTORE_EMULATOR_HOST=127.
 
 ## 本番について
 
-本番FirebaseプロジェクトIDは `hanahuda-adf91` です。Cloud Shellから公開する手順は[CloudShell本番公開手順](docs/CloudShell本番公開手順.md)を参照してください。`npm run deploy:production` は実際にHosting、Functions、Firestore Rulesへ変更を送信します。課金プラン変更・GitHubへのpush・deployは、所有者が明示的に許可した場合だけ実施します。
+本番FirebaseプロジェクトIDは `hanahuda-adf91` です。Windows PCのPowerShellから公開する手順は[PowerShell本番公開手順](docs/PowerShell本番公開手順.md)を参照してください。`firebase deploy --project hanahuda-adf91 --only functions,firestore,hosting` は実際にHosting、Functions、Firestore Rulesへ変更を送信します。課金プラン変更・GitHubへのpush・deployは、所有者が明示的に許可した場合だけ実施します。
