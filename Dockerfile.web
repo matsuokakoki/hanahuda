@@ -1,0 +1,10 @@
+FROM node:22.22.0-bookworm-slim
+WORKDIR /workspace
+COPY package*.json ./
+COPY apps/web/package.json apps/web/package.json
+COPY functions/package.json functions/package.json
+COPY packages/game-core/package.json packages/game-core/package.json
+RUN npm install --no-audit --no-fund
+COPY . .
+RUN npm run build -w @extreme-hanafuda/game-core
+EXPOSE 5173

@@ -1,0 +1,56 @@
+services:
+  firebase:
+    build:
+      context: .
+      dockerfile: Dockerfile.firebase
+    working_dir: /workspace
+    command: npm run emulators -- --import=/workspace/.firebase-data --export-on-exit=/workspace/.firebase-data
+    environment:
+      FIREBASE_CLI_CONFIG: /tmp/firebase-config.json
+      CI: "true"
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+      - "8080:8080"
+      - "9099:9099"
+      - "4000:4000"
+    volumes:
+      - ./.firebase-data:/workspace/.firebase-data
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:4000"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    working_dir: /workspace
+    command: npm run dev -w web -- --host 0.0.0.0
+    environment:
+      VITE_FIREBASE_PROJECT_ID: demo-extreme-hanafuda
+      VITE_EMULATOR_HOST: ${EMULATOR_HOST:-localhost}
+    ports:
+      - "5173:5173"
+    depends_on:
+      firebase:
+        condition: service_healthy
+
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.firebase
+    working_dir: /workspace
+    profiles: ["test"]
+    environment:
+      FIREBASE_CLI_CONFIG: /tmp/firebase-config.json
+      FIRESTORE_EMULATOR_HOST: firebase:8080
+      FIREBASE_AUTH_EMULATOR_HOST: firebase:9099
+      FUNCTIONS_EMULATOR_HOST: firebase:5001
+      WEB_URL: http://host.docker.internal:5173
+      CI: "true"
+    command: npm test
+    depends_on:
+      firebase:
+        condition: service_healthy

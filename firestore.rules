@@ -1,0 +1,32 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function participantInParent() {
+      return signedIn() && resource != null &&
+        request.auth.uid in resource.data.participantUids;
+    }
+    function participantInSubcollection(matchId) {
+      // Subcollection reads must look up the parent, but the existence check
+      // prevents a missing/stale match ID from dereferencing null data.
+      return signedIn() &&
+        exists(/databases/$(database)/documents/matches/$(matchId)) &&
+        request.auth.uid in
+          get(/databases/$(database)/documents/matches/$(matchId)).data.participantUids;
+    }
+    match /matches/{matchId} {
+      allow read: if participantInParent();
+      allow write: if false;
+      match /private/{uid} {
+        allow read: if participantInSubcollection(matchId) && request.auth.uid == uid;
+        allow write: if false;
+      }
+      match /events/{eventId} {
+        allow read: if participantInSubcollection(matchId);
+        allow write: if false;
+      }
+      match /server/{document=**} { allow read, write: if false; }
+    }
+    match /{document=**} { allow read, write: if false; }
+  }
+}

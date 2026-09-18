@@ -1,0 +1,15 @@
+{
+  "name": "@extreme-hanafuda/game-core",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+    "./cards": { "types": "./dist/cards.d.ts", "import": "./dist/cards.js" },
+    "./yaku": { "types": "./dist/yaku.d.ts", "import": "./dist/yaku.js" },
+    "./characters": { "types": "./dist/characters.d.ts", "import": "./dist/characters.js" }
+  },
+  "scripts": { "build": "tsc -b", "typecheck": "tsc -b --pretty false" },
+  "devDependencies": { "typescript": "5.9.3" }
+}
