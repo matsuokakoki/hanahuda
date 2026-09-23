@@ -1,5 +1,6 @@
 # エクストリーム花札
 
+A solo-built, two-player real-time Hanafuda web game with rematches. The game rules live in a Firebase-independent TypeScript reducer, while Firebase Functions and Firestore handle validation and shared game state. Local development uses Firebase Emulator.
 友達と2人で遊ぶ、HP制のリアルタイム花札Webゲームです。1試合を遊び、終了後は同じ部屋で再戦できます。React/Vite、Firebase Callable Functions v2、Firestore、匿名Authで構成し、ゲームルールはFirebase非依存の純粋TypeScript Reducerに分離しています。
 
 ローカル構成は **Firebase本番へ一切接続せず**、固定プロジェクトID `demo-extreme-hanafuda` のEmulatorだけを使います。画面にログイン操作はありません。起動時にAuth Emulatorへ匿名サインインします。[公開版](https://hanahuda-adf91.web.app/)は2026-09-23にブラウザでロビー表示まで確認しました。本番の更新手順はCloud ShellとPowerShellの文書を参照してください。この確認だけで対戦の全経路を再検証したとは主張しません。
