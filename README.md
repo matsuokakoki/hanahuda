@@ -2,7 +2,7 @@
 
 友達と2人で遊ぶ、HP制のリアルタイム花札Webゲームです。1試合を遊び、終了後は同じ部屋で再戦できます。React/Vite、Firebase Callable Functions v2、Firestore、匿名Authで構成し、ゲームルールはFirebase非依存の純粋TypeScript Reducerに分離しています。
 
-現在のローカル構成は **Firebase本番へ一切接続せず**、固定プロジェクトID `demo-extreme-hanafuda` のEmulatorだけを使います。画面にログイン操作はありません。起動時にAuth Emulatorへ匿名サインインします。本番公開時は `hanahuda-adf91` を使い、Cloud Shellから公開します。
+ローカル構成は **Firebase本番へ一切接続せず**、固定プロジェクトID `demo-extreme-hanafuda` のEmulatorだけを使います。画面にログイン操作はありません。起動時にAuth Emulatorへ匿名サインインします。[公開版](https://hanahuda-adf91.web.app/)は2026-09-23にブラウザでロビー表示まで確認しました。本番の更新手順はCloud ShellとPowerShellの文書を参照してください。この確認だけで対戦の全経路を再検証したとは主張しません。
 
 **Status:** 実際に2人で遊べるゲームとして運用しています。対戦終了後の再戦と感想戦も実装済みです。初期の1戦制の要件文書は [履歴](docs/history/initial_spec.md) に保管し、現行仕様とは区別しています。
 
