@@ -1,8 +1,24 @@
 # エクストリーム花札
 
-友達と2人で遊ぶ、HP制で何局も続くリアルタイム花札Webゲームです。React/Vite、Firebase Callable Functions v2、Firestore、匿名Authで構成し、ゲームルールはFirebase非依存の純粋TypeScript Reducerに分離しています。
+友達と2人で遊ぶ、HP制のリアルタイム花札Webゲームです。1試合を遊び、終了後は同じ部屋で再戦できます。React/Vite、Firebase Callable Functions v2、Firestore、匿名Authで構成し、ゲームルールはFirebase非依存の純粋TypeScript Reducerに分離しています。
 
 現在のローカル構成は **Firebase本番へ一切接続せず**、固定プロジェクトID `demo-extreme-hanafuda` のEmulatorだけを使います。画面にログイン操作はありません。起動時にAuth Emulatorへ匿名サインインします。本番公開時は `hanahuda-adf91` を使い、Cloud Shellから公開します。
+
+**Status:** 実際に2人で遊べるゲームとして運用しています。対戦終了後の再戦と感想戦も実装済みです。初期の1戦制の要件文書は [履歴](docs/history/initial_spec.md) に保管し、現行仕様とは区別しています。
+
+## 状態の流れ
+
+```mermaid
+flowchart LR
+  A[React / Vite] -->|匿名Auth・Callable command| B[Firebase Functions]
+  B -->|認可・stateVersion・commandId| C[game-core reducer]
+  C -->|transaction| D[Firestore: public / private / events]
+  D -->|onSnapshot| A
+```
+
+判定ロジックは `packages/game-core/src` の純粋TypeScriptに分離してテストできます。Functionsは参加者の認可と入力検証を行い、古い `stateVersion` を拒否します。`commandId` は再送の二重反映を防ぎ、Firestore Rulesはサーバー用状態の直接書き込みを制限します。画面は公開状態、本人用状態、イベントを購読します。
+
+実画面を撮る場合の手順と掲載時の注意は [demo guide](docs/demo.md) に記載しています。現時点ではrepositoryに実画面画像はありません。
 
 ## 必要なもの
 
@@ -104,6 +120,8 @@ docker compose --profile test run --rm --no-deps -e FIRESTORE_EMULATOR_HOST=127.
 - 幅360px対応UIと2ブラウザPlaywrightシナリオ
 
 仕様外のランキング、チャット、監視、App Check本番強制、TTL、WAF、PWAは実装していません。
+
+[`キャラ説明.txt`](キャラ説明.txt) の元PDFと札・キャラクター表現の権利・再利用条件は所有者の確認が必要です。コードのライセンスも未設定です。
 
 ## 本番について
 
