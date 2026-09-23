@@ -121,7 +121,7 @@ docker compose --profile test run --rm --no-deps -e FIRESTORE_EMULATOR_HOST=127.
 
 仕様外のランキング、チャット、監視、App Check本番強制、TTL、WAF、PWAは実装していません。
 
-[`キャラ説明.txt`](キャラ説明.txt) の元PDFと札・キャラクター表現の権利・再利用条件は所有者の確認が必要です。コードのライセンスも未設定です。
+このrepositoryのコードには独自コード用のLICENSEファイルを設定していません。
 
 ## 本番について
 
